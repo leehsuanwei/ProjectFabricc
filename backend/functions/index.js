@@ -3,9 +3,8 @@ const express = require("express");
 const app = express();
 
 const userRouter = require("./api/routers/userRouter");
-const communityRouter = require("./api/routers/communityRouter");
-const postRouter = require("./api/routers/postRouter");
-const commentRouter = require("./api/routers/commentRouter");
+const agentRouter = require("./api/routers/agentRouter");
+const clothRouter = require("./api/routers/clothRouter");
 
 app.use(express.json());
 
@@ -14,9 +13,8 @@ app.get("/", (req, res, next) =>
 );
 
 app.use("/user", userRouter);
-app.use("/community", communityRouter);
-app.use("/post", postRouter);
-app.use("/comment", commentRouter);
+app.use("/agent", agentRouter);
+app.use("/cloth", clothRouter);
 
 exports.api = functions.https.onRequest(app);
 

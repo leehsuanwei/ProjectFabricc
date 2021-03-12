@@ -5,8 +5,6 @@ __Current Implementation__
 
 1. users
     + name
-    + [:cloth] on-hand
-    + [:cloth] returned
     + fibre
 2. agents
     + id

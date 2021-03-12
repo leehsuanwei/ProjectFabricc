@@ -1,6 +1,5 @@
 const user = require("../models/user");
-const post = require("../models/post");
-const community = require("../models/community");
+const token = require("../models/token");
 
 // Get all users
 const getUsers = async (req, res) => {
@@ -22,46 +21,6 @@ const getUser = async (req, res, next) => {
         return next(e);
     }
 }
-
-// Get user's posts
-const getUserPosts = async (req, res, next) => {
-    try {
-        const userDoc = await user.get(req.params.id);
-        if (!userDoc) return res.sendStatus(404);
-
-        const result = await post.getFromIds(userDoc['posts']);
-        return res.json(result);
-    } catch (e) {
-        return next(e);
-    }
-}
-
-// Get user's companions
-const getUserCompanions = async (req, res, next) => {
-    try {
-        const userDoc = await user.get(req.params.id);
-        if (!userDoc) return res.sendStatus(404);
-
-        const result = await user.getFromIds(userDoc['companions']);
-        return res.json(result);
-    } catch (e) {
-        return next(e);
-    }
-}
-
-// Get user's communities
-const getUserCommunities = async (req, res, next) => {
-    try {
-        const userDoc = await user.get(req.params.id);
-        if (!userDoc) return res.sendStatus(404);
-
-        const result = await community.getFromIds(userDoc['communities']);
-        return res.json(result);
-    } catch (e) {
-        return next(e);
-    }
-}
-
 // Create a new user
 const createUser = async (req, res, next) => {
     try {
@@ -72,7 +31,25 @@ const createUser = async (req, res, next) => {
         return next(e);
     }
 }
-
+// Claim Fibre after scan qr_code as token id from agent
+const claimFibre = async (req, res, next) => {
+    try {
+        const mToken = await token.get(req.params.token_id);
+        const mUser = await user.get(req.params.user_id);
+        if (!user['fibre']) user['fibre'] = 0;
+        mUser['fibre'] = Number(mToken['fibre']) + Number(mUser['fibre']);
+        const result = await token.delete(req.params.token_id);   // delete anyway
+        if ((Date.now() - mToken['created_at']) > 600000) { // > 10 mins, skip update user
+            return  res.sendStatus(404);
+        }
+            
+        const updateResult = await user.update(req.params.user_id, mUser);
+        if (!updateResult) return res.sendStatus(404);
+        return res.json(mUser);
+    } catch(e) {
+        return next(e);
+    }
+}
 // Delete a user
 const deleteUser = async (req, res, next) => {
     try {
@@ -121,9 +98,7 @@ const replaceUser = async (req, res, next) => {
 module.exports = {
     getUsers,
     getUser,
-    getUserPosts,
-    getUserCompanions,
-    getUserCommunities,
+    claimFibre,
     createUser,
     deleteUser,
     updateUser,

@@ -1,30 +1,29 @@
-const comment = require("../models/comment");
+const cloth = require("../models/cloth");
 
-// Get all comments
-const getComments = async (req, res) => {
+// Get all cloths
+const getCloths = async (req, res) => {
     try {
-        const result = await comment.getAll();
+        const result = await cloth.getAll();
         return res.json(result);
     } catch (e) {
         return next(e);
     }
 }
 
-// Get one comment
-const getComment = async (req, res, next) => {
+// Get one cloth
+const getCloth = async (req, res, next) => {
     try {
-        const result = await comment.get(req.params.id);
+        const result = await cloth.get(req.params.id);
         if (!result) return res.sendStatus(404);
         return res.json(result);
     } catch (e) {
         return next(e);
     }
 }
-
-// Create a new comment
-const createComment = async (req, res, next) => {
+// Create a new cloth
+const createCloth = async (req, res, next) => {
     try {
-        const result = await comment.create(req.body);
+        const result = await cloth.create(req.body);
         if (!result) return res.sendStatus(409);
         return res.status(201).json(result);
     } catch (e) {
@@ -32,10 +31,10 @@ const createComment = async (req, res, next) => {
     }
 }
 
-// Delete a comment
-const deleteComment = async (req, res, next) => {
+// Delete a cloth
+const deleteCloth = async (req, res, next) => {
     try {
-        const result = await comment.delete(req.params.id);
+        const result = await cloth.delete(req.params.id);
         if (!result) return res.sendStatus(404);
         return res.sendStatus(200);
     } catch (e) {
@@ -43,19 +42,19 @@ const deleteComment = async (req, res, next) => {
     }
 }
 
-// Update a comment
-const updateComment = async (req, res, next) => {
+// Update a cloth
+const updateCloth = async (req, res, next) => {
     try {
         const id = req.params.id;
         const data = req.body;
 
-        const doc = await comment.get(id);
+        const doc = await cloth.get(id);
         if (!doc) return res.sendStatus(404);
 
         // Merge existing fields with the ones to be updated
         Object.keys(data).forEach((key) => (doc[key] = data[key]));
 
-        const updateResult = await comment.update(id, doc);
+        const updateResult = await cloth.update(id, doc);
         if (!updateResult) return res.sendStatus(404);
 
         return res.json(doc);
@@ -64,13 +63,13 @@ const updateComment = async (req, res, next) => {
     }
 }
 
-// Replace a comment
-const replaceComment = async (req, res, next) => {
+// Replace a cloth
+const replaceCloth = async (req, res, next) => {
     try {
-        const updateResult = await comment.update(req.params.id, req.body);
+        const updateResult = await cloth.update(req.params.id, req.body);
         if (!updateResult) return res.sendStatus(404);
 
-        const result = await comment.get(req.params.id);
+        const result = await cloth.get(req.params.id);
         return res.json(result);
     } catch (e) {
         return next(e);
@@ -78,10 +77,10 @@ const replaceComment = async (req, res, next) => {
 }
 
 module.exports = {
-    getComments,
-    getComment,
-    createComment,
-    deleteComment,
-    updateComment,
-    replaceComment,
+    getCloths,
+    getCloth,
+    createCloth,
+    deleteCloth,
+    updateCloth,
+    replaceCloth,
 };
