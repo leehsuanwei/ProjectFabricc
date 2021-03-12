@@ -35,11 +35,11 @@ const createAgent = async (req, res, next) => {
 const requestToken = async (req, res, next) => {
     try {
         const time_now = Date.now();
-        const fibre = req.params.fibre;
+        const fiber = req.params.fiber;
         const mAgent = await agent.get(req.params.agent_id);
         if (!mAgent) return res.sendStatus(404);
         // allow creation of token if agent exist
-        const result = await token.create({"created_at":time_now,"fibre":fibre});
+        const result = await token.create({"created_at":time_now,"fiber":fiber});
         if (!result) return res.sendStatus(404);
         return res.json(result);
     } catch(e) {

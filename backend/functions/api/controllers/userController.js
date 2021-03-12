@@ -36,8 +36,8 @@ const claimFibre = async (req, res, next) => {
     try {
         const mToken = await token.get(req.params.token_id);
         const mUser = await user.get(req.params.user_id);
-        if (!user['fibre']) user['fibre'] = 0;
-        mUser['fibre'] = Number(mToken['fibre']) + Number(mUser['fibre']);
+        if (!user['fiber']) user['fiber'] = 0;
+        mUser['fiber'] = Number(mToken['fiber']) + Number(mUser['fiber']);
         const result = await token.delete(req.params.token_id);   // delete anyway
         if ((Date.now() - mToken['created_at']) > 600000) { // > 10 mins, skip update user
             return  res.sendStatus(404);
