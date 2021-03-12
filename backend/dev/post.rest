@@ -1,0 +1,37 @@
+##############################################################
+# Mobile Application Programming (SCSJ3623)
+# Semester 2, 2019/2020
+##############################################################
+
+# REST API Server on Local Firebase
+@baseUrl = http://localhost:5001/companion-dc793/us-central1/api
+
+# REST API Server on Live Firebase
+# @baseUrl = https://us-central1-companion-dc793.cloudfunctions.net/api
+
+
+//Foods data Testinggg
+### Getting the list of foods
+GET {{baseUrl}}/post/all
+
+###  Getting a food of given id
+GET {{baseUrl}}/post/ZnLtcztK8vNtrUPl2BMF
+
+###  Create a new food
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+    "id": "ZnLtcztK8vNtrUPl2BMF"
+}
+
+### Update the status of a given food (whether is completed or not)
+PATCH {{baseUrl}}/post/ZnLtcztK8vNtrUPl2BMF
+Content-Type: application/json
+
+{
+    "id": "ZnLtcztK8vNtrUPl2BMF"
+}
+
+### Deleting a given food
+DELETE {{baseUrl}}/post/ZnLtcztK8vNtrUPl2BMF
